@@ -14,18 +14,21 @@ app.add_middleware(
 )
 
 @app.get("/compare")
-async def compare(user1: str, user2: str):
+async def compare(
+    user1: str, user2: str,
+    lc1: str = None, lc2: str = None
+):
     gh1, gh2 = await get_github_stats(user1), await get_github_stats(user2)
-    lc1, lc2 = await get_leetcode_stats(user1), await get_leetcode_stats(user2)
+    lc_stats1, lc_stats2 = await get_leetcode_stats(lc1 or user1), await get_leetcode_stats(lc2 or user2)
 
     if "error" in gh1: return {"error": gh1["error"]}
     if "error" in gh2: return {"error": gh2["error"]}
 
-    if "error" in lc1: lc1 = {"easy_solved": 0, "medium_solved": 0, "hard_solved": 0, "ranking": 999999}
-    if "error" in lc2: lc2 = {"easy_solved": 0, "medium_solved": 0, "hard_solved": 0, "ranking": 999999}
+    if "error" in lc_stats1: lc_stats1 = {"easy_solved": 0, "medium_solved": 0, "hard_solved": 0, "ranking": 999999}
+    if "error" in lc_stats2: lc_stats2 = {"easy_solved": 0, "medium_solved": 0, "hard_solved": 0, "ranking": 999999}
 
-    u1 = {**gh1, **lc1}
-    u2 = {**gh2, **lc2}
+    u1 = {**gh1, **lc_stats1}
+    u2 = {**gh2, **lc_stats2}
 
     score1 = calculate_score(u1)
     score2 = calculate_score(u2)

@@ -693,7 +693,7 @@ async function soloGo() {
     setTimeout(()=>{ $('home-result').scrollIntoView({behavior:'smooth',block:'start'}); }, 60);
 
   } catch(e) {
-    soloShowErr('Could not reach the backend on localhost:8000.');
+    soloShowErr('Could not reach the backend on cracked-or-cooked-production.up.railway.app.');
   } finally {
     clearInterval(t);
     $('h-btn').disabled = false;
@@ -763,7 +763,7 @@ async function battleGo() {
     if (d.error) { $('battle-err').textContent=`Error: ${d.error}`; $('battle-err').style.display='block'; return; }
     renderBattle(d, u1, u2);
   } catch(e) {
-    $('battle-err').textContent='Could not reach backend on localhost:8000.';
+    $('battle-err').textContent='Could not reach backend on cracked-or-cooked-production.up.railway.app.';
     $('battle-err').style.display = 'block';
   } finally {
     clearInterval(t);

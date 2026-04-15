@@ -22,6 +22,8 @@ async def get_github_stats(username: str) -> dict:
             f"{BASE}/users/{username}/repos?per_page=100", headers=HEADERS
         )
         repos = repos_res.json()
+        if not isinstance(repos, list):
+            repos = []
         total_stars = sum(r.get("stargazers_count", 0) for r in repos)
 
         return {
